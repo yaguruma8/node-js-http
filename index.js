@@ -25,10 +25,8 @@ const server = http
                     console.info(`[${now}] Data posted: ${decoded}`);
                     const qs = require('querystring');
                     const ans = qs.parse(decoded);
-                    const body = `${ans['name']}さんは${ans['yaki-shabu']}に投票しました。`
-                    res.write(
-                        `<html><body>${body}</body></html>`
-                    );
+                    const body = `${ans['name']}さんは${ans['yaki-shabu']}に投票しました。`;
+                    res.write(`<html><body>${body}</body></html>`);
                     res.end();
                 });
                 break;
