@@ -5,20 +5,28 @@ const server = http
         const now = new Date();
         console.info(`[${now}] Request by ${req.socket.remoteAddress}`);
         res.writeHead(200, {
-            'Content-Type': 'text/plain; charset=utf-8',
+            'Content-Type': 'text/html; charset=utf-8',
         });
 
         switch (req.method) {
             case 'GET':
-                res.write(`GET: ${req.url}`);
+                const fs = require('fs');
+                const rs = fs.createReadStream('./form.html');
+                rs.pipe(res);
+                // res.write(`GET: ${req.url}`);
                 break;
             case 'POST':
-                res.write(`POST: ${req.url}`);
+                // res.write(`POST: ${req.url}`);
                 let rawData = '';
                 req.on('data', (chunk) => {
                     rawData += chunk;
                 }).on('end', () => {
-                    console.info(`[${now}] Data posted: ${rawData}`);
+                    const decoded = decodeURIComponent(rawData);
+                    console.info(`[${now}] Data posted: ${decoded}`);
+                    res.write(
+                        `<html><body>${decoded}が投稿されました</body></html>`
+                    );
+                    res.end();
                 });
                 break;
             case 'DELETE':
@@ -27,7 +35,6 @@ const server = http
             default:
                 break;
         }
-        res.end();
     })
     .on('error', (e) => {
         console.error(`[${new Date()}] Server Error`, e);
