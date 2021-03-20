@@ -51,7 +51,10 @@ const server = http
             const ans = qs.parse(decoded);
             const body = `${ans['name']}さんは${ans['favorite']}に投票しました。`;
             console.info(`[${now}] ${body}`);
-            res.write(`<html><body>${body}</body></html>`);
+            // res.write(`<html><body>${body}</body></html>`);
+            res.write(pug.renderFile('./result.pug', {
+                result: body
+            }))
             res.end();
           });
         break;
