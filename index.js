@@ -23,8 +23,11 @@ const server = http
                 }).on('end', () => {
                     const decoded = decodeURIComponent(rawData);
                     console.info(`[${now}] Data posted: ${decoded}`);
+                    const qs = require('querystring');
+                    const ans = qs.parse(decoded);
+                    const body = `${ans['name']}さんは${ans['yaki-shabu']}に投票しました。`
                     res.write(
-                        `<html><body>${decoded}が投稿されました</body></html>`
+                        `<html><body>${body}</body></html>`
                     );
                     res.end();
                 });
