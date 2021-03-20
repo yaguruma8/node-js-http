@@ -11,10 +11,13 @@ const server = http
 
     switch (req.method) {
       case 'GET':
-        // const fs = require('fs');
-        // const rs = fs.createReadStream('./form.html');
-        // rs.pipe(res);
-        res.write(pug.renderFile('./form.pug'));
+        res.write(
+          pug.renderFile('./form.pug', {
+            path: req.url,
+            firstItem: '焼き肉',
+            secondItem: 'しゃぶしゃぶ',
+          })
+        );
         res.end();
         break;
       case 'POST':
@@ -28,7 +31,8 @@ const server = http
             console.info(`[${now}] Data posted: ${decoded}`);
             const qs = require('querystring');
             const ans = qs.parse(decoded);
-            const body = `${ans['name']}さんは${ans['yaki-shabu']}に投票しました。`;
+            const body = `${ans['name']}さんは${ans['favorite']}に投票しました。`;
+            console.info(`[${now}] ${body}`)
             res.write(`<html><body>${body}</body></html>`);
             res.end();
           });
