@@ -11,9 +11,13 @@ const server = http
 
     switch (req.method) {
       case 'GET':
-        if (req.url === '/enquetes/yaki-shabu') {
+        if (req.url === '/') {
+          res.write(pug.renderFile('./pug/index.pug'));
+        } else if (req.url === '/enquetes') {
+          res.write(pug.renderFile('./pug/enquetes.pug'));
+        } else if (req.url === '/enquetes/yaki-shabu') {
           res.write(
-            pug.renderFile('./form.pug', {
+            pug.renderFile('./pug/form.pug', {
               path: req.url,
               firstItem: '焼肉',
               secondItem: 'しゃぶしゃぶ',
@@ -21,20 +25,20 @@ const server = http
           );
         } else if (req.url === '/enquetes/rice-bread') {
           res.write(
-            pug.renderFile('./form.pug', {
+            pug.renderFile('./pug/form.pug', {
               path: req.url,
               firstItem: 'ごはん',
               secondItem: 'パン',
             })
           );
         } else if (req.url === '/enquetes/sushi-pizza') {
-            res.write(
-                pug.renderFile('./form.pug', {
-                  path: req.url,
-                  firstItem: '寿司',
-                  secondItem: 'ピザ',
-                })
-              )
+          res.write(
+            pug.renderFile('./pug/form.pug', {
+              path: req.url,
+              firstItem: '寿司',
+              secondItem: 'ピザ',
+            })
+          );
         }
         res.end();
         break;
@@ -52,14 +56,13 @@ const server = http
             const body = `${ans['name']}さんは${ans['favorite']}に投票しました。`;
             console.info(`[${now}] ${body}`);
             // res.write(`<html><body>${body}</body></html>`);
-            res.write(pug.renderFile('./result.pug', {
-                result: body
-            }))
+            res.write(
+              pug.renderFile('./pug/result.pug', {
+                result: body,
+              })
+            );
             res.end();
           });
-        break;
-      case 'DELETE':
-        res.write(`DELETE: ${req.url}`);
         break;
       default:
         break;
