@@ -3,8 +3,7 @@ const http = require('http');
 const pug = require('pug');
 const server = http
   .createServer((req, res) => {
-    const now = new Date();
-    console.info(`[${now}] Request by ${req.socket.remoteAddress}`);
+    console.info(`Request by ${req.socket.remoteAddress}`);
     res.writeHead(200, {
       'Content-Type': 'text/html; charset=utf-8',
     });
@@ -50,11 +49,11 @@ const server = http
           })
           .on('end', () => {
             const decoded = decodeURIComponent(rawData);
-            console.info(`[${now}] Data posted: ${decoded}`);
+            console.info(`Data posted: ${decoded}`);
             const qs = require('querystring');
             const ans = qs.parse(decoded);
             const body = `${ans['name']}さんは${ans['favorite']}に投票しました。`;
-            console.info(`[${now}] ${body}`);
+            console.info(`${body}`);
             // res.write(`<html><body>${body}</body></html>`);
             res.write(
               pug.renderFile('./pug/result.pug', {
@@ -69,13 +68,13 @@ const server = http
     }
   })
   .on('error', (e) => {
-    console.error(`[${new Date()}] Server Error`, e);
+    console.error(`Server Error`, e);
   })
   .on('clientError', (e) => {
-    console.error(`[${new Date()}] Client Error`, e);
+    console.error(`Client Error`, e);
   });
 
 const port = process.env.PORT || 8000;
 server.listen(port, () => {
-  console.info(`[${new Date()}] Listening on ${port}`);
+  console.info(`Listening on ${port}`);
 });
